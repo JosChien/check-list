@@ -1,7 +1,7 @@
 <div class="create__checklist">
   <div class="create__checklist-header">
     <h1>Create new checklist</h1>
-    <div class="mt-2 d-flex justify-content-between align-items-center">
+    <div class="mt-2 d-flex justify-content-between align-items-center flex-wrap">
       <mat-form-field>
         <mat-label>Choose a date</mat-label>
         <input
@@ -16,10 +16,11 @@
         <button mat-raised-button color="primary" class="mr-2" (click)="onSubmit()">Save</button>
         <button mat-raised-button (click)="onCancel()">Cancel</button>
       </div>
+      <p>
+        Options selected: {{getCheckedItems().length}}
+      </p>
+      <button mat-raised-button color="primary" (click)="SelectAll()">Selecte All</button>
     </div>
-    <p>
-      Options selected: {{getCheckedItems().length}}
-    </p>
   </div>
   <!-- <mat-card class="example-card">
     <mat-card-header>
@@ -42,22 +43,26 @@
   </mat-card> -->
 
   <mat-nav-list class="create-list">
-    <h3 mat-subheader>Unchecked items</h3>
-    <mat-list-item *ngFor="let item of getUncheckedItems()" (click)="onCheck(item)">
-      <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
-      <a matLine>{{ item.name }}</a>
-      <!-- <mat-icon [ngSwitch]="item.status">
-        <span *ngSwitchCase="1">check_box</span>
-        <span *ngSwitchCase="2">indeterminate_check_box</span>
-        <span *ngSwitchDefault>check_box_outline_blank</span>
-      </mat-icon> -->
-      <!-- <button mat-raised-button>Basic</button> -->
-    </mat-list-item>
-    <h3 mat-subheader>Checked items</h3>
-    <mat-list-item *ngFor="let item of getCheckedItems()" (click)="onCheck(item)">
-      <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
-      <a matLine>{{ item.name }}</a>
-    </mat-list-item>
+    <div class="list-item">
+      <h3 mat-subheader>Unchecked items</h3>
+      <mat-list-item *ngFor="let item of getUncheckedItems()" (click)="onCheck(item)">
+        <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
+        <a matLine>{{ item.name }}</a>
+        <!-- <mat-icon [ngSwitch]="item.status">
+          <span *ngSwitchCase="1">check_box</span>
+          <span *ngSwitchCase="2">indeterminate_check_box</span>
+          <span *ngSwitchDefault>check_box_outline_blank</span>
+        </mat-icon> -->
+        <!-- <button mat-raised-button>Basic</button> -->
+      </mat-list-item>
+    </div>
+    <div class="list-item">
+      <h3 mat-subheader>Checked items</h3>
+      <mat-list-item *ngFor="let item of getCheckedItems()" (click)="onCheck(item)">
+        <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
+        <a matLine>{{ item.name }}</a>
+      </mat-list-item>
+    </div>
   </mat-nav-list>
 
   <!-- <mat-selection-list #shoes role="listbox">

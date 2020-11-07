@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { ChecklistService } from 'src/app/_firebases/checklist.service';
 import { combineLatest } from 'rxjs';
 import { AlertService } from '../../_services';
+import { isNgTemplate } from '@angular/compiler';
 
 @Component({
   selector: 'app-create-checklist',
@@ -58,9 +59,10 @@ export class CreateChecklistComponent implements OnInit {
               memberItem = dataMemberItem.payload.doc.data();
               memberItem.id = dataMemberItem.payload.doc.id;
               this.memberList.push(memberItem);
+              let arrayLastname = memberItem.lastName.split(' ');
                 this.checklistItemList.push({
                   id: memberItem.id,
-                  name: memberItem.lastName + ' ' + memberItem.firstName,
+                  name: arrayLastname[arrayLastname.length - 1] + ' ' + memberItem.firstName,
                   image:memberItem.image,
                   status: 0,
                   selected: false,
@@ -88,6 +90,14 @@ export class CreateChecklistComponent implements OnInit {
 
   getCheckedItems() {
     return this.checklistItemList.filter(x => x.selected);
+  }
+
+  SelectAll() {
+    this.checklistItemList = this.checklistItemList.map(item => {
+      let duplicateItem = item;
+      duplicateItem.selected = true;
+      return duplicateItem;
+    })
   }
 
   onSubmit() {

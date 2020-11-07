@@ -3,6 +3,7 @@ export class IMember {
     prefixName: string;
     firstName: string;
     lastName: string;
+    nickName?: string
     image?: string;
     dateOfBirth?: string;
     phoneNumber?: string;

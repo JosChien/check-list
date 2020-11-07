@@ -32,6 +32,11 @@
         <mat-error *ngIf="hasError('lastName', 'required')">Last name name is <strong>required</strong></mat-error>
       </mat-form-field>
 
+      <!-- Nickname -->
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Nickname" formControlName="nickName" [(ngModel)]="nickName">
+      </mat-form-field>
+
       <!-- Năm sinh -->
       <mat-form-field class="full-width">
         <input matInput placeholder="Date of Birth" formControlName="dateOfBirth" [(ngModel)]="dateOfBirth">

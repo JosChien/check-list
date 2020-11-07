@@ -22006,14 +22006,14 @@ const Names = [
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyBBnMTcOGafXLQztrgZynkm177EVnEbmI0",
-    authDomain: "mychecklist-8afd5.firebaseapp.com",
-    databaseURL: "https://mychecklist-8afd5.firebaseio.com",
-    projectId: "mychecklist-8afd5",
-    storageBucket: "mychecklist-8afd5.appspot.com",
-    messagingSenderId: "290809435292",
-    appId: "1:290809435292:web:b605545f17efec79e88959",
-    measurementId: "G-NLS6M5E4BH"
+    apiKey: "AIzaSyDPwS4KXcnwZPcGnfBrTZdi3DswoXEBwEk",
+    authDomain: "joschien-checklist.firebaseapp.com",
+    databaseURL: "https://joschien-checklist.firebaseio.com",
+    projectId: "joschien-checklist",
+    storageBucket: "joschien-checklist.appspot.com",
+    messagingSenderId: "513336962299",
+    appId: "1:513336962299:web:cdae4b34533323c826945e",
+    measurementId: "G-32FSN5G6WM"
   },
   DatabaseTableNames: DatabaseTableNames,
   NewEntityURLParameters: NewEntityURLParameters,

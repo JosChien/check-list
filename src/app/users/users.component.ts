@@ -66,6 +66,8 @@ export class UsersComponent implements OnInit {
     const dialogRef = this.dialog.open(FormUpdateUserComponent, {
       data: {...user, type: true}
     });
+    console.log(user);
+
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });

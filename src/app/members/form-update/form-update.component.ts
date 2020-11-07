@@ -21,6 +21,7 @@ export class FormUpdateComponent implements OnInit {
   prefixName = '';
   firstName = '';
   lastName = '';
+  nickName = ''
   id = '';
   phoneNumber = '';
   dateOfBirth = '';
@@ -46,6 +47,7 @@ export class FormUpdateComponent implements OnInit {
       prefixName: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
+      nickName: '',
       dateOfBirth: '',
       phoneNumber: '',
       address: '',
@@ -68,6 +70,9 @@ export class FormUpdateComponent implements OnInit {
           this.firstName = member.firstName;
           this.lastName = member.lastName;
           this.id =  id;
+          if (member.nickName) {
+            this.nickName =  member.nickName;
+          }
           if (member.image) {
             this.srcImage =  member.image;
           }
@@ -119,6 +124,7 @@ export class FormUpdateComponent implements OnInit {
       id,
       firstName,
       lastName,
+      nickName,
       dateOfBirth,
       phoneNumber,
       fullNameDad,
@@ -136,6 +142,7 @@ export class FormUpdateComponent implements OnInit {
       prefixName: prefixName,
       firstName: firstName,
       lastName: lastName,
+      nickName: nickName,
       dateOfBirth: dateOfBirth,
       phoneNumber: phoneNumber,
       fullNameDad: fullNameDad,

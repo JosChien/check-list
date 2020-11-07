@@ -99,6 +99,11 @@ thead .check-list__name {
 	z-index      : 5;
 	/* background   : darkgray; */
 	border-bottom: 1px solid #dee2e6;
+	min-width: 200px;
+}
+
+thead .check-list__name.short-name {
+	min-width: 120px;
 }
 
 tbody .check-list__name {

@@ -28,8 +28,12 @@ export class UserService extends FirebaseService {
     return this.create(this.dbPath, data);
   }
 
-  updateUser(data) {
+  updateListUser(data) {
     return this.update(this.dbPath, data.id, data);
+  }
+
+  updateUser(data) {
+    return this.updateItem(this.dbPath, data.id, data);
   }
 
   deleteUser(dataKey: string) {
@@ -57,6 +61,12 @@ export class UserService extends FirebaseService {
               permission: doc.permission,
               token: 'fake-jwt-token'
             };
+            if (doc.shortName) {
+              user.shortName = doc.shortName;
+            }
+            if (doc.language) {
+              user.language = doc.language;
+            }
           });
         }
 

@@ -22,6 +22,7 @@ export class ChecklistListComponent implements OnInit {
   chooseListDay = [];
   checkedDateList = [];
   progress = true;
+  isShortName = false;
 
   constructor(
     private router: Router,
@@ -91,6 +92,8 @@ export class ChecklistListComponent implements OnInit {
           // this.alertService.addAlert({ Type: 'danger', Dismissible: true, Message: 'An error occurred loading npi project setup data.' } as IAlert);
         },
         () => { console.log('completed'); });
+
+        this.hasShortName();
   }
 
   hasPermission() {
@@ -99,6 +102,22 @@ export class ChecklistListComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  hasShortName() {
+    const { shortName } = this.authenticationService;
+    if ( shortName ) {
+      this.isShortName = true;
+      return;
+    }
+    this.isShortName = false;
+  }
+
+  hasNickName(member) {
+    if (member && member.nickName) {
+      return member.nickName;
+    }
+    return member.firstName;
   }
 
   createNewChecklist() {

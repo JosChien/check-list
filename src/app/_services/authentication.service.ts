@@ -10,6 +10,8 @@ import { UserService } from '../_firebases/user.service';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
+  public language:boolean = false;
+  public shortName: boolean = false;
 
   constructor(private http: HttpClient, private userService: UserService) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
@@ -21,11 +23,18 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
+    const self = this;
     return this.userService.authenticate(username, password).then(user => {
       // login successful if there's a jwt token in the response
 
       if (user && user.token) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
+        if (user.shortName) {
+          self.shortName = user.shortName;
+        }
+        if (user.language) {
+          self.language = user.language;
+        }
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
       }

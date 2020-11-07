@@ -1,3 +1,7 @@
+p {
+  margin: 0px;
+}
+
 .example-card {
   max-width: 400px;
 }
@@ -35,11 +39,25 @@ button {
 }
 
 .mat-line {
-  font-size: 14px !important;
+  font-size: 12px !important;
 }
 
 .create-list {
   padding-top: 130px;
+  width: 100%;
+  display: flex;
+}
+
+.list-item {
+  width: 50%;
+}
+
+.list-item .mat-list-item-content {
+  padding: 0px !important;
+}
+
+.mat-list-base .mat-list-item.mat-list-item-with-avatar .mat-list-item-content .mat-list-text {
+  padding: 5px !important;
 }
 
 @media only screen and (min-width: 1024px) {
