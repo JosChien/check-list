@@ -1,0 +1,39 @@
+<div *ngIf='type'>
+  <h2 mat-dialog-title>{{create ? 'Create Class' : 'Update Class'}}</h2>
+    <form [formGroup]="formUpdateUser" (ngSubmit)="onSubmit()" class="update-Classes__info">
+    <mat-dialog-content class="mat-typography">
+      <div class="content-form">
+        <!-- Name Column -->
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Name" formControlName="name" [(ngModel)]="name">
+        </mat-form-field>
+
+        <!-- Short Column -->
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Short Name" formControlName="shortName" [(ngModel)]="shortName">
+        </mat-form-field>
+
+        <!-- Course Column -->
+        <mat-form-field class="full-width" *ngIf="create">
+          <input matInput placeholder="Course" formControlName="course" [(ngModel)]="course">
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button [mat-dialog-close]="true" cdkFocusInitial type="submit">Save</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+
+<div *ngIf="!type">
+  <h2 mat-dialog-title>Delete Class</h2>
+<mat-dialog-content class="mat-typography">
+  <p>Are you sure delete class {{ name }} !!!</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="deleteClass()" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+</mat-dialog-actions>
+</div>

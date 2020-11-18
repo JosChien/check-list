@@ -8,11 +8,11 @@
         <div class="cardFront">
           <mat-card class="example-card">
             <div class="image">
-              <img mat-card-image [src]="item.image || '/assets/image/default-user-image.png'"
+              <img mat-card-image [src]="item.avatar || '/assets/image/default-user-image.png'"
               alt=avatar_{{item.firstName}} />
             </div>
             <mat-card-content>
-              <h5 class="grid-member__name">{{item.prefixName}} {{item.lastName}} {{item.firstName}}</h5>
+              <h5 class="grid-member__name">{{item.saintName}} {{item.lastName}} {{item.firstName}}</h5>
               <p >
                 Ngày sinh:
                 <span [class.red-color]="!item?.dateOfBirth">

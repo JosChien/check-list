@@ -9,13 +9,14 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './_guards';
 import { MemberListComponent } from './members/member-list/member-list.component';
 import { FormUpdateComponent } from './members/form-update/form-update.component';
-import { SettingsComponent } from './settings/settings.component'
-import { UsersComponent } from './users/users.component'
+import { SettingsComponent } from './settings/settings.component';
+import { UsersComponent } from './users/users.component';
+import { ClassesComponent } from './classes/classes.component'
+import { AccountComponent } from './account/account.component'
 
 const routes: Routes = [
   {
-    path: '', component: HomeComponent,
-    canActivate: [AuthGuard]
+    path: '', component: HomeComponent
   },
   {
     path: 'customers',
@@ -36,14 +37,23 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'settings',
     component: SettingsComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'members',
-    component: MemberListComponent,
+    path: 'classes',
+    component: ClassesComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'members',
+    component: MemberListComponent
   },
   {
     path: 'users',
@@ -53,7 +63,6 @@ const routes: Routes = [
   {
     path: 'checklists',
     loadChildren: './checklists/checklists.module#ChecklistsModule',
-    canActivate: [AuthGuard]
   },
   {
     path: 'members/form-member',

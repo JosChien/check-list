@@ -1,8 +1,9 @@
-import { IMember } from './imember';
+import { IMemberAbsent } from './imembersAbsent';
 
 export class IChecklist {
     id: string;
-    date: string;
-    members: Array<IMember>;
+    course: string
+    dates: Array<string>;
+    class: { id: string };
+    members: Array<IMemberAbsent>;
 }
-

@@ -1,0 +1,42 @@
+<div class="account">
+  <h2>Profile</h2>
+  <div class="account_avatar">
+    <div class="image">
+      <img
+        [src]="avatar"
+        id="upload__review"/>
+    </div>
+
+    <label for="avatar" class="account__lable-image">Choose Image</label>
+    <input
+      type="file"
+      id="avatar"
+      name="avatar"
+      accept="image/png, image/jpeg"
+      (change)="handlerAvatar($event)"
+    >
+  </div>
+
+  <div class="settings">
+    <div class="settings__row d-flex justify-content-between align-items-center" >
+      <p>Short name check list, nickname</p>
+      <mat-slide-toggle
+        color="primary"
+        [(ngModel)]="useShortName"
+        ></mat-slide-toggle>
+    </div>
+    <div class="settings__row d-flex justify-content-between align-items-center">
+      <p>Language VietNamese</p>
+      <mat-slide-toggle
+        color="primary"
+        [(ngModel)]="language"
+        ></mat-slide-toggle>
+    </div>
+    <button mat-raised-button color="primary" class="mr-2" (click)="Save()"> Save </button>
+  </div>
+
+  <div class="account__footer d-flex justify-content-center align-items-center">
+  <button mat-raised-button (click)="editAccount()" class="mr-2"> Edit </button>
+  <button mat-raised-button (click)="logout()" color="primary">Logout</button>
+  </div>
+</div>

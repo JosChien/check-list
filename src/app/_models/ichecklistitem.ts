@@ -1,7 +1,7 @@
 export class IChecklistItem {
     id: string;
     name: string;
-    image?:string;
+    avatar?:string;
     status: number;
     selected: boolean;
 }

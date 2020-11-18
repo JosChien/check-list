@@ -11,9 +11,11 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
   public language:boolean = false;
-  public shortName: boolean = false;
+  public useShortName: boolean = false;
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  constructor(
+    private http: HttpClient,
+    private userService: UserService) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -29,12 +31,13 @@ export class AuthenticationService {
 
       if (user && user.token) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        if (user.shortName) {
-          self.shortName = user.shortName;
+        if (user.useShortName) {
+          self.useShortName = user.useShortName;
         }
         if (user.language) {
           self.language = user.language;
         }
+
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
       }
@@ -46,6 +49,7 @@ export class AuthenticationService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('idCatechism');
     this.currentUserSubject.next(null);
   }
 }

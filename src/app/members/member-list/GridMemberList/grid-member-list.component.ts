@@ -20,7 +20,7 @@ export class GridMemberListComponent implements OnInit {
 
   hasPermission() {
     const { currentUserValue } = this.authenticationService;
-    if (currentUserValue && currentUserValue.permission !== Site.CUSTOMER) {
+    if (currentUserValue) {
       return true;
     }
     return false;

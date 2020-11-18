@@ -1,0 +1,21 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+i {
+  cursor: pointer;
+}
+
+.mat-cell {
+  font-size: 12px;
+}
+@media only screen and (min-width: 1024px) {
+  .mat-cell {
+    font-size: 14px;
+  }
+}

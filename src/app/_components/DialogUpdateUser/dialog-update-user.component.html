@@ -20,16 +20,31 @@
         </mat-form-field>
 
         <mat-form-field class="full-width">
-          <mat-label>Permission</mat-label>
-          <mat-select [value]="permission" (selectionChange)="changePermission($event)">
+          <mat-label>Role</mat-label>
+          <mat-select [value]="role" (selectionChange)="changeRole($event)">
             <mat-option
-              *ngFor="let childLisPermission of listPermission"
-              [value]="childLisPermission">
-              {{ childLisPermission }}
+              *ngFor="let childLisRole of listRole"
+              [value]="childLisRole">
+              {{ childLisRole }}
             </mat-option>
           </mat-select>
           <!-- <input matInput placeholder="Permission" formControlName="permission" [(ngModel)]="permission"> -->
         </mat-form-field>
+        <h5>Classes</h5>
+        <div class="mb-3">
+          <span
+            class="class__ischoose"
+            *ngFor="let item of getCheckedItems()"
+            (click)="onCheck(item)">
+            {{ item.shortName }}
+          </span>
+        </div>
+        <div class="listClasses">
+          <mat-list-item *ngFor="let item of getUncheckedItems()" (click)="onCheck(item)">
+            <span matLine class="listClasses__child">{{ item.shortName }}</span>
+          </mat-list-item>
+        </div>
+
       </div>
     </mat-dialog-content>
 

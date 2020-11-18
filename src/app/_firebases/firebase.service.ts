@@ -36,6 +36,4 @@ export class FirebaseService {
   protected delete(collectionName: string, dataKey: string) {
     return this.db.collection(collectionName).doc(dataKey).delete();
   }
-
-
 }

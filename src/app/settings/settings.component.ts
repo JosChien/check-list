@@ -19,14 +19,14 @@ export class SettingsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const { currentUserValue, shortName, language } = this.authenticationService;
-    this.shortName = shortName;
+    const { currentUserValue, useShortName, language } = this.authenticationService;
+    this.shortName = useShortName;
     this.language = language;
     this.userService.getUser(currentUserValue.id)
     .subscribe(doc => {
       let user: any = doc.payload.data();
-      if(user.shortName) {
-        this.shortName = user.shortName;
+      if(user.useShortName) {
+        this.shortName = user.useShortName;
       }
       if (user.language) {
         this.language = user.language;
@@ -39,11 +39,11 @@ export class SettingsComponent implements OnInit {
     const self = this;
     let params = {
       ...currentUserValue,
-      shortName: this.shortName,
+      useShortName: this.shortName,
       language: this.language
     }
     this.userService.updateUser(params).then(data => {
-      this.authenticationService.shortName = self.shortName;
+      this.authenticationService.useShortName = self.shortName;
       this.alertService.success('Save setting successfully!!!')
     })
   }

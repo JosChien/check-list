@@ -1,12 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+/* tslint:disable:no-unused-variable */
 
+import { TestBed, async, inject } from '@angular/core/testing';
 import { ChecklistService } from './checklist.service';
 
-describe('ChecklistService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
-
-  it('should be created', () => {
-    const service: ChecklistService = TestBed.get(ChecklistService);
-    expect(service).toBeTruthy();
+describe('Service: Checklist', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ChecklistService]
+    });
   });
+
+  it('should ...', inject([ChecklistService], (service: ChecklistService) => {
+    expect(service).toBeTruthy();
+  }));
 });

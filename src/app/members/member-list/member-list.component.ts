@@ -4,9 +4,11 @@ import { environment } from 'src/environments/environment';
 import { SortService } from 'src/app/_services';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/_firebases/member.service';
-import { Site } from 'src/app/_until/constant'
 import { AuthenticationService } from 'src/app/_services';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClass/DialogChooseClass.component';
+import { ChecklistService } from 'src/app/_firebases/checklist.service';
+import { IMemberAbsent } from 'src/app/_models';
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
@@ -16,89 +18,84 @@ import { AuthenticationService } from 'src/app/_services';
 export class MemberListComponent implements OnInit {
   memberList : Array<IMember>;
   memberListAPI: Array<IMember>;
+  IdCheckList: string;
+  listMember: Array<IMemberAbsent>;
   listChecked = [];
   viewTable = false;
   checkSearch = false;
   search = '';
-  progress = true;
+  // progress = true;
 
   constructor(
     private router: Router,
     private sortService: SortService,
     private memberService: MemberService,
-    public authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService,
+    public dialog: MatDialog,
+    private checklistService: ChecklistService,
   ) { }
 
   ngOnInit() {
-    // for (let i = 0; i < 10; i++) {
-    //   const nameList = environment.Names;
-    //   const firstName = nameList[Math.floor(Math.random() * nameList.length)];
-    //   const lastName = nameList[Math.floor(Math.random() * nameList.length)];
-    //   const item: IMember = { id: i.toString(), firstName: firstName, lastName: lastName };
-    //   this.memberList.push(item);
-    // }
+    const idCatechism = localStorage.getItem("idCatechism");
+    if (!idCatechism) {
+      this.openDialogChooseClass();
+      return;
+    }
+    const self = this;
+    this.listMember = [];
+    const getChecklists = this.checklistService.getChecklists();
+    getChecklists.subscribe(data => {
+      data.map(docChangeAction => {
+        let checklistItem: any = docChangeAction.payload.doc.data();
+        checklistItem.id = docChangeAction.payload.doc.id;
+        if (checklistItem.class && checklistItem.class.id === idCatechism) {
+          self.IdCheckList = checklistItem.id;
+          if ( checklistItem.members ) {
+            self.listMember = checklistItem.members;
+            this.getMembers();
+          }
+        }
+      })
+    })
+    // this.progress = false;
+  }
 
-    // this.memberList.sort(this.sortService.sortByFirstName);
-    this.memberService.getMembers()
-    .subscribe(doc => {
-      this.memberList=[];
-      this.memberListAPI=[];
-      doc.map(data => {
-        let memberItem: any = data.payload.doc.data();
-        memberItem.isChecked = false;
-        if (memberItem.dateOfBirth === undefined) {
-          memberItem.dateOfBirth = null;
-        }
-        if (memberItem.phoneNumber === undefined) {
-          memberItem.phoneNumber = null;
-        }
-        if (memberItem.fullNameDad === undefined) {
-          memberItem.fullnameDad = null;
-        }
-        if (memberItem.phoneNumberDad === undefined) {
-          memberItem.phoneNumberDad = null;
-        }
-        if (memberItem.fullNameMom === undefined) {
-          memberItem.fullnameMom = null;
-        }
-        if (memberItem.phoneNumberMom === undefined) {
-          memberItem.phoneNumberMom = null;
-        }
-        if (memberItem.parish === undefined) {
-          memberItem.parish = null;
-        }
-        if (memberItem.province === undefined) {
-          memberItem.province = null;
-        }
-        if (memberItem.address === undefined) {
-          memberItem.address = null;
-        }
-        memberItem.id = data.payload.doc.id;
-        this.memberList.push(memberItem);
-      });
-      console.log(this.memberList, "memberList");
-      this.memberList.sort(this.sortService.sortByFirstName);
-      this.memberListAPI = this.memberList;
-      this.progress = false;
-      });
+  getMembers() {
+    const { listMember } = this;
+    this.memberList = [];
+    if (listMember && listMember.length !== 0) {
+      const listIdMember = listMember.map(member => member.id);
+      listIdMember.map(idMember => {
+      const getMember =  this.memberService.getMember(idMember);
+        getMember.subscribe(doc => {
+        let member:any = doc.payload.data();
+        member.id = doc.payload.id;
+        member.isChecked = false;
+        this.memberList.push(member);
+        })
+      })
+    }
+    this.memberList.sort(this.sortService.sortByFirstName);
+    this.memberListAPI = this.memberList;
+  }
+
+  openDialogChooseClass() {
+    this.dialog.open(DialogChooseClassComponent, { disableClose: true });
   }
 
   hasPermission() {
     const { currentUserValue } = this.authenticationService;
-    if (currentUserValue && currentUserValue.permission !== Site.CUSTOMER) {
+    if (currentUserValue) {
       return true;
     }
     return false;
   }
 
   createNew() {
-    console.log('created new');
     this.router.navigate(['/members/form-member']);
   }
 
   update(item) {
-    console.log('update', item);
-    // this.router.navigate(['/members/update']);
     this.router.navigate(['/members/form-member', {id: item.id}]);
   }
 
@@ -119,14 +116,18 @@ export class MemberListComponent implements OnInit {
 
   deleteMembers() {
     this.memberList = [];
-    this.listChecked.forEach( listId => {
-      this.memberService.deleteMember(listId)
-      .then(data => {
-        console.log("done");
+    const { listMember, IdCheckList } = this;
+    let listMembers = listMember.filter(member => !this.listChecked.includes(member.id))
+    let parmasCheckList = {
+      id: IdCheckList,
+      members: [...listMembers]
+    }
+    this.checklistService.updateChecklistItem(parmasCheckList)
+    .then(data => {
+        this.listChecked.forEach( listId => {
+          debugger
+          this.memberService.deleteMember(listId);
       })
-      .catch(error => {
-        console.log(error);
-      });
     })
     this.listChecked = [];
   }
@@ -166,64 +167,78 @@ export class MemberListComponent implements OnInit {
     const { memberListAPI } = this;
     let self = this;
     if (searchType) {
+      // filter SaintName
+      let filterSaintName = memberListAPI.filter(item =>
+        self.clearAccent(item.saintName).toLowerCase().includes(searchType.toLowerCase())
+          )
       // filter firsName
       let filterFirstName = memberListAPI.filter(item =>
           item.firstName.toLowerCase().includes(searchType.toLowerCase())
           )
       //filter LastName
       let lastName = memberListAPI.filter(item =>
-          item.lastName.toLowerCase().includes(searchType.toLowerCase())
-          )
+        item.lastName.toLowerCase().includes(searchType.toLowerCase())
+        )
       //filter date of birth
-      let filterBirthday = memberListAPI.filter(item =>
-          item.dateOfBirth.toLowerCase().includes(searchType.toLowerCase())
-          )
-      // filter PrefixName
-      let filterPrefixName = memberListAPI.filter(item =>
-        self.clearAccent(item.prefixName).toLowerCase().includes(searchType.toLowerCase())
-          )
+      let filterBirthday = memberListAPI.filter(item => {
+        if (item.dateOfBirth) {
+          item.dateOfBirth.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
       //filter Number phone
-      let filterPhone = memberListAPI.filter(item =>
-          item.phoneNumber.toLowerCase().includes(searchType.toLowerCase())
-          )
+      let filterPhone = memberListAPI.filter(item => {
+        if (item.phoneNumber) {
+          item.phoneNumber.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
       //filter Name Dady
-      let filterNameDad = memberListAPI.filter(item =>
-          item.fullNameDad.toLowerCase().includes(searchType.toLowerCase())
-          )
+      let filterNameDad = memberListAPI.filter(item => {
+        if (item.fullNameDad) {
+          item.fullNameDad.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
       // filter Name Mom
-      let filterNameMom = memberListAPI.filter(item =>
-          item.fullNameMom.toLowerCase().includes(searchType.toLowerCase())
-          )
+      let filterNameMom = memberListAPI.filter(item => {
+        if (item.fullNameMom) {
+          item.fullNameMom.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
       //Number phone Dady
-      let filterPhoneDady = memberListAPI.filter(item =>
-          item.phoneNumberDad.toLowerCase().includes(searchType.toLowerCase())
-          )
+      let filterPhoneDady = memberListAPI.filter(item => {
+        if (item.phoneNumberDad) {
+          item.phoneNumberDad.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
       // Number phone Mommy
-      let filterPhoneMomy = memberListAPI.filter(item =>
-          item.phoneNumberMom.toLowerCase().includes(searchType.toLowerCase())
-          )
-        let filterMember = [
-          ...filterFirstName,
-          ...lastName,
-          ...filterBirthday,
-          ...filterPrefixName,
-          ...filterPhone,
-          ...filterNameDad,
-          ...filterNameMom,
-          ...filterPhoneDady,
-          ...filterPhoneMomy
-        ]
-        let filterMemberList = [];
-        filterMember.map(member => {
-          if(!filterMemberList.includes(member)) {
-            filterMemberList.push(member);
-            return;
-          }
+      let filterPhoneMomy = memberListAPI.filter(item => {
+        if (item.phoneNumberMom) {
+          item.phoneNumberMom.toLowerCase().includes(searchType.toLowerCase());
+        }
+      })
+
+      let filterMember = [
+        ...filterFirstName,
+        ...lastName,
+        ...filterBirthday,
+        ...filterSaintName,
+        ...filterPhone,
+        ...filterNameDad,
+        ...filterNameMom,
+        ...filterPhoneDady,
+        ...filterPhoneMomy
+      ]
+
+      let filterMemberList = [];
+      filterMember.map(member => {
+        if(!filterMemberList.includes(member)) {
+          filterMemberList.push(member);
           return;
-        })
-        this.memberList = filterMemberList;
-        this.memberList.sort(this.sortService.sortByFirstName);
+        }
         return;
+      })
+      this.memberList = filterMemberList;
+      this.memberList.sort(this.sortService.sortByFirstName);
+      return;
     }
     this.memberList = this.memberListAPI;
   }

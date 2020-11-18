@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IChecklist } from '../_models/ichecklist';
 import { MemberService } from '../_firebases/member.service';
-import { IMember } from '../_models';
+import { IMemberAbsent } from '../_models';
 import { SortService } from '../_services';
 import { DatePipe } from '@angular/common';
 
@@ -21,13 +21,15 @@ export class ChecklistResolver implements Resolve<IChecklist> {
   resolve(route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<IChecklist> {
     const id = route.paramMap.get('id');
-    let memberList: Array<IMember> = [];
+    let memberList: Array<IMemberAbsent> = [];
     console.log('resolver', id);
 
     if (id === environment.NewEntityURLParameters.NewChecklist) {
       let checklist: IChecklist = {
         id: '',
-        date: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
+        course: '',
+        dates: [],
+        class: {id: '' },
         members: memberList
       };
       console.log('in resolver', checklist);

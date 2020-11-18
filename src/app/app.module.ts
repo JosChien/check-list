@@ -34,6 +34,10 @@ import { DatePipe } from '@angular/common';
 import { SettingsComponent } from './settings/settings.component';
 import { UsersComponent } from './users/users.component';
 import { FormUpdateUserComponent } from './_components/DialogUpdateUser/dialog-update-user.component'
+import { AccountComponent } from './account/account.component';
+import { ClassesComponent } from './classes/classes.component';
+import { DialogUpdateClassesComponent } from 'src/app/_components/DialogUpdateClasses/DialogUpdateClasses.component'
+import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClass/DialogChooseClass.component'
 
 @NgModule({
   declarations: [
@@ -52,7 +56,11 @@ import { FormUpdateUserComponent } from './_components/DialogUpdateUser/dialog-u
     FormUpdateComponent,
     SettingsComponent,
     UsersComponent,
-    FormUpdateUserComponent
+    FormUpdateUserComponent,
+    AccountComponent,
+    ClassesComponent,
+    DialogUpdateClassesComponent,
+    DialogChooseClassComponent
    ],
   imports: [
     BrowserModule,
@@ -77,7 +85,9 @@ import { FormUpdateUserComponent } from './_components/DialogUpdateUser/dialog-u
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    FormUpdateUserComponent
+    FormUpdateUserComponent,
+    DialogUpdateClassesComponent,
+    DialogChooseClassComponent
   ],
 })
 export class AppModule { }

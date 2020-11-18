@@ -1,10 +1,10 @@
 export class IMember {
     id: string;
-    prefixName: string;
+    saintName: string;
     firstName: string;
     lastName: string;
-    nickName?: string
-    image?: string;
+    nickname?: string;
+    avatar?: string;
     dateOfBirth?: string;
     phoneNumber?: string;
     fullNameDad?: string;

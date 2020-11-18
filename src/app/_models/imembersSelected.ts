@@ -1,6 +1,6 @@
 export class IMemberSelected {
   id: string;
-  prefixName: string;
+  saintName: string;
   firstName: string;
   lastName: string;
 }

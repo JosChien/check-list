@@ -4,11 +4,11 @@
     <div class="image">
       <img
         id="upload__review"
-        [src]="srcImage"
+        [src]="avatar"
       />
     </div>
 
-    <label for="avatar" class="label__image">Choose Image</label>
+    <label for="avatar" class="label__image">Choose Avatar</label>
     <input
       type="file"
       id="avatar"
@@ -20,21 +20,21 @@
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="form__info">
     <div class="content-form">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Prefix Name" formControlName="prefixName" [(ngModel)]="prefixName">
-        <mat-error *ngIf="hasError('prefixName', 'required')">Prefix name is <strong>required</strong></mat-error>
+        <input matInput placeholder="Saint Name" formControlName="saintName" [(ngModel)]="saintName">
+        <mat-error *ngIf="hasError('saintName', 'required')">Saint name is <strong>required</strong></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="First Name" formControlName="firstName" [(ngModel)]="firstName">
-        <mat-error *ngIf="hasError('firstName', 'required')">First name name is <strong>required</strong></mat-error>
+        <mat-error *ngIf="hasError('firstName', 'required')">First name is <strong>required</strong></mat-error>
       </mat-form-field>
       <mat-form-field class="full-width">
         <input matInput placeholder="Last Name" formControlName="lastName" [(ngModel)]="lastName">
-        <mat-error *ngIf="hasError('lastName', 'required')">Last name name is <strong>required</strong></mat-error>
+        <mat-error *ngIf="hasError('lastName', 'required')">Last name is <strong>required</strong></mat-error>
       </mat-form-field>
 
       <!-- Nickname -->
       <mat-form-field class="full-width">
-        <input matInput placeholder="Nickname" formControlName="nickName" [(ngModel)]="nickName">
+        <input matInput placeholder="Nickname" formControlName="nickname" [(ngModel)]="nickname">
       </mat-form-field>
 
       <!-- Năm sinh -->
@@ -86,27 +86,8 @@
       {{ showShortDesciption ? 'show more': 'show less' }}
     </div>
     <div class="form-member__footer">
-      <button *ngIf="hasPermission()" mat-raised-button color="primary" type="submit" class="mr-2" [disabled]="formGroup.invalid">Save</button>
+      <button mat-raised-button color="primary" type="submit" class="mr-2" [disabled]="formGroup.invalid">Save</button>
       <button mat-raised-button (click)="onCancel()">Cancel</button>
     </div>
   </form>
 </div>
-
-<!-- <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" formControlName="username" class="form-control"
-      [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-      <div *ngIf="f.username.errors.required">Username is required</div>
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" formControlName="password" class="form-control"
-      [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-      <div *ngIf="f.password.errors.required">Password is required</div>
-    </div>
-  </div>
-</form> -->

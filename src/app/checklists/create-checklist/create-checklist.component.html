@@ -7,7 +7,6 @@
         <input
         matInput
         [matDatepicker]="picker"
-        [matDatepickerFilter]="FilterDate"
         [(ngModel)]="selectedDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -46,7 +45,7 @@
     <div class="list-item">
       <h3 mat-subheader>Unchecked items</h3>
       <mat-list-item *ngFor="let item of getUncheckedItems()" (click)="onCheck(item)">
-        <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
+        <img matListAvatar [src]="item.avatar || '/assets/image/default-user-image.png'" alt="...">
         <a matLine>{{ item.name }}</a>
         <!-- <mat-icon [ngSwitch]="item.status">
           <span *ngSwitchCase="1">check_box</span>
@@ -59,7 +58,7 @@
     <div class="list-item">
       <h3 mat-subheader>Checked items</h3>
       <mat-list-item *ngFor="let item of getCheckedItems()" (click)="onCheck(item)">
-        <img matListAvatar [src]="item.image || '/assets/image/default-user-image.png'" alt="...">
+        <img matListAvatar [src]="item.avatar || '/assets/image/default-user-image.png'" alt="...">
         <a matLine>{{ item.name }}</a>
       </mat-list-item>
     </div>
