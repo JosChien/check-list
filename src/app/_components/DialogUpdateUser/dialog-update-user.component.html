@@ -49,8 +49,8 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial type="submit">Save</button>
+      <button mat-raised-button mat-dialog-close>Cancel</button>
+      <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial type="submit">Save</button>
     </mat-dialog-actions>
   </form>
 </div>
@@ -61,7 +61,7 @@
   <p>Are you sure delete user of {{ firstName }} !!!</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button (click)="deleteUser()" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="deleteUser()" [mat-dialog-close]="true" cdkFocusInitial>Save</button>
 </mat-dialog-actions>
 </div>

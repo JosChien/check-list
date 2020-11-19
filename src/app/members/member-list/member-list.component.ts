@@ -5,8 +5,6 @@ import { SortService } from 'src/app/_services';
 import { Router } from '@angular/router';
 import { MemberService } from 'src/app/_firebases/member.service';
 import { AuthenticationService } from 'src/app/_services';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClass/DialogChooseClass.component';
 import { ChecklistService } from 'src/app/_firebases/checklist.service';
 import { IMemberAbsent } from 'src/app/_models';
 @Component({
@@ -31,14 +29,13 @@ export class MemberListComponent implements OnInit {
     private sortService: SortService,
     private memberService: MemberService,
     public authenticationService: AuthenticationService,
-    public dialog: MatDialog,
     private checklistService: ChecklistService,
   ) { }
 
   ngOnInit() {
     const idCatechism = localStorage.getItem("idCatechism");
     if (!idCatechism) {
-      this.openDialogChooseClass();
+      this.router.navigate(['/']);
       return;
     }
     const self = this;
@@ -77,10 +74,6 @@ export class MemberListComponent implements OnInit {
     }
     this.memberList.sort(this.sortService.sortByFirstName);
     this.memberListAPI = this.memberList;
-  }
-
-  openDialogChooseClass() {
-    this.dialog.open(DialogChooseClassComponent, { disableClose: true });
   }
 
   hasPermission() {

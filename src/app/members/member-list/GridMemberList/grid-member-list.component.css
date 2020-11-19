@@ -1,5 +1,5 @@
 .grid-memberlist {
-	margin-top: 80px
+	margin: 80px -15px 0
 }
 
 .marginTop {
@@ -16,7 +16,7 @@
 
 .image {
 	width: 100%;
-	height: 250px;
+	height: 170px;
 	margin-bottom: 10px;
 }
 
@@ -24,38 +24,55 @@
 	border: 1px solid red;
 }
 
+.mat-card {
+	padding: 5px;
+}
+
 .mat-card-image {
 	width: 100%;
 	height: 100%;
 	margin: 0;
 }
+
+.mat-card-content {
+	font-size: 12px;
+}
+
+.mat-card-content h6 {
+	font-size: 14px;
+}
+
 .red-color {
 	color: red;
 	font-style: italic;
 }
 
 .grid-member__name {
-	min-height: 25px;
+	min-height: 33px;
+	font-size: 14px;
 }
 
 p {
 	 margin-bottom: 7px;
+	 font-size: 12px;
 }
 
- .mat-card-image:first-child {
+.mat-card-image:first-child {
 	margin-top: 0px
 }
+
 .cards {
 	perspective: 1000px;
 	-webkit-perspective: 1000px;
 	-moz-perspective: 1000px;
 	-o-perspective: 1000px;
 	-ms-perspective: 1000px;
-	height: 470px;
+	height: 350px;
+	padding: 0px 5px
 }
 
 .heightCard {
-	height: 420px;
+	height: 330px;
 }
 
 .cards .content {
@@ -156,7 +173,8 @@ p {
 }
 
 .mat-card-title {
-	font-size: 25px;
+	margin-top: 10px;
+  font-size: 16px;
 	text-decoration: underline;
 	margin-bottom: 15px;
 }
@@ -164,13 +182,41 @@ p {
 .mat-card-actions {
 	position: absolute;
 	width: 90%;
-	bottom: 25px;
+	bottom: 20px;
+}
+
+.mat-button {
+	font-size: 12px;
 }
 
 .infomation-detail {
 	font-weight: 200;
 	font-size: 15px;
 }
+
+@media only screen and (min-width: 768px) {
+	.grid-memberlist {
+		padding: 0 10px
+	}
+
+	.cards {
+		height: 380px;
+	}
+
+	.mat-card {
+		padding: 12px;
+	}
+
+	.image {
+		height: 185px;
+	}
+
+	.grid-member__name {
+    min-height: 38px;
+    font-size: 16px;
+}
+}
+
 @media only screen and (min-width: 1024px) {
 	.marginTop {
 		margin-top: 40px;
@@ -181,18 +227,28 @@ p {
 	}
 
 	.cards {
-		height: 490px;
+		height: 425px;
 	}
 
 	.heightCard {
-		height: 450px;
+		height: 400px;
 	}
 
 	.image {
 		margin-bottom: 20px;
+		height: 200px;
 	}
 
 	.grid-member__name {
 		min-height: 50px;
+		font-size: 18px;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	.mat-button {
+		font-size: 13px
 	}
 }

@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  hide = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +37,10 @@ export class LoginComponent implements OnInit {
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  public hasError = (controlName: string, errorName: string) => {
+    return this.loginForm.controls[controlName].hasError(errorName);
   }
 
   // convenience getter for easy access to form fields

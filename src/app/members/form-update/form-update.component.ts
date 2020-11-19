@@ -220,6 +220,8 @@ export class FormUpdateComponent implements OnInit {
     }
     fileReader.onloadend = function(e){
       self.avatar = fileReader.result.toString();
+      console.log(self.avatar, "avatar");
+
     }
     console.log(file);
 

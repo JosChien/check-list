@@ -8,8 +8,6 @@ import { SortService, DateService } from 'src/app/_services';
 import { DatePipe } from '@angular/common';
 import { Site } from 'src/app/_until/constant'
 import { AuthenticationService } from 'src/app/_services';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClass/DialogChooseClass.component';
 
 @Component({
   selector: 'app-checklist-list',
@@ -34,13 +32,12 @@ export class ChecklistListComponent implements OnInit {
     private sortService: SortService,
     private datePipe: DatePipe,
     private dateService: DateService,
-    public authenticationService: AuthenticationService,
-    public dialog: MatDialog,) { }
+    public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     const idCatechism = localStorage.getItem("idCatechism");
     if (!idCatechism) {
-      this.openDialogChooseClass();
+      this.router.navigate(['/']);
       return
     }
     const self = this;
@@ -94,10 +91,6 @@ export class ChecklistListComponent implements OnInit {
         })
       })
     }
-  }
-
-  openDialogChooseClass() {
-    this.dialog.open(DialogChooseClassComponent, { disableClose: true });
   }
 
   hasPermission() {
