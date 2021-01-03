@@ -60,6 +60,18 @@ button {
   padding: 5px !important;
 }
 
+.mat-list-item {
+  background: #8080801a;
+}
+
+.list-item.unchecked .mat-list-item:nth-child(2n+1) {
+  background: #80808030;
+}
+
+.list-item.checked .mat-list-item:nth-child(2n) {
+  background: #80808030;
+}
+
 @media only screen and (min-width: 1024px) {
   .create__checklist{
     font-size:16px

@@ -1,0 +1,21 @@
+<div mat-dialog-content>
+  <h2 mat-dialog-title>Update member {{data.member.firstName}}</h2>
+  <section class="example-section">
+    <mat-radio-group [(ngModel)]="labelCheckItem">
+      <mat-radio-button class="example-margin" value="checked">Checked</mat-radio-button>
+      <mat-radio-button class="example-margin" value="unChecked">UnChecked</mat-radio-button>
+    </mat-radio-group>
+  </section>
+  <mat-card-content *ngIf="labelCheckItem === 'unChecked'">
+    <section class="example-section">
+      <mat-form-field>
+        <mat-label>Message</mat-label>
+        <input matInput [(ngModel)]="message">
+      </mat-form-field>
+    </section>
+  </mat-card-content>
+</div>
+<div mat-dialog-actions style="float: right;">
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [mat-dialog-close] cdkFocusInitial>Save</button>
+</div>

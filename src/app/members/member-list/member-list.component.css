@@ -4,7 +4,8 @@
 	}
 } */
 h2 {
-	font-size: 20px;
+	font-size: 22px;
+	line-height: 50px;
 }
 
 .member-list__header-fix {
@@ -42,7 +43,12 @@ button {
 }
 
 mat-form-field {
-	width: 100%;
+	width: 70%;
+}
+
+.chooseClasses {
+	width: 150px;
+	font-size: 12px;
 }
 
 @media only screen and (min-width: 425px) {
@@ -76,5 +82,11 @@ mat-form-field {
 
 	mat-form-field {
 		width: 40%;
+	}
+
+	.chooseClasses {
+		width: 200px;
+		font-size: 14px;
+		line-height: 15px;
 	}
 }

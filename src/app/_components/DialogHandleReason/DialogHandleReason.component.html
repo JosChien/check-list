@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <p>What's reason of {{data.item.name}}?</p>
+  <mat-form-field>
+    <mat-label>Message</mat-label>
+    <input matInput [(ngModel)]="data.message">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.message" cdkFocusInitial>Save</button>
+</div>

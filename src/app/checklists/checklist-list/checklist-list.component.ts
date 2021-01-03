@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ChecklistService } from 'src/app/_firebases/checklist.service';
-import { IChecklist, IMember, IMemberAbsent } from 'src/app/_models';
+import { IChecklist, IMember, IMemberAbsent, IClass } from 'src/app/_models';
 import { MemberService } from 'src/app/_firebases/member.service';
 import { SortService, DateService } from 'src/app/_services';
 import { DatePipe } from '@angular/common';
 import { Site } from 'src/app/_until/constant'
 import { AuthenticationService } from 'src/app/_services';
+import { ClassService } from 'src/app/_firebases/class.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogEditCheckListComponent } from 'src/app/_components/DialogEditCheckList/DialogEditCheckList.component'
 
 @Component({
   selector: 'app-checklist-list',
@@ -20,6 +23,8 @@ export class ChecklistListComponent implements OnInit {
   IdCheckList: string;
   listMember: Array<IMemberAbsent>;
   listDateExit: Array<string>;
+  listCatechism: Array<IClass>;
+  listClass: Array<IClass>;
   chooseListDay = [];
   listDatesCheckList = [];
   progress = true;
@@ -27,24 +32,55 @@ export class ChecklistListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private classService: ClassService,
     private checklistService: ChecklistService,
     private memberService: MemberService,
     private sortService: SortService,
     private datePipe: DatePipe,
+    public dialog: MatDialog,
     private dateService: DateService,
     public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    const { currentUserValue } = this.authenticationService;
     const idCatechism = localStorage.getItem("idCatechism");
+    const listCatechism = this.classService.getClasses();
+    this.listCatechism = [];
+    this.listClass = [];
+    listCatechism.subscribe(doc => {
+      doc.map(data => {
+        let catechism: any = data.payload.doc.data();
+        catechism.id = data.payload.doc.id;
+        this.listCatechism.push(catechism);
+      })
+      if (currentUserValue && currentUserValue.classes) {
+        currentUserValue.classes.map(idClass => {
+          let childCatechism = this.listCatechism.filter(
+            catechism => catechism.id === idClass.id);
+            this.listClass.push(childCatechism[0]);
+        })
+      } else {
+        this.listClass = this.listCatechism;
+      }
+    })
     if (!idCatechism) {
-      this.router.navigate(['/']);
+      this.progress = false;
       return
     }
+    this.getCheckList(idCatechism);
+  }
+
+  handleCatechism($event) {
+    this.getCheckList($event.value);
+    localStorage.setItem('idCatechism', $event.value);
+  }
+
+  getCheckList(idCatechism) {
     const self = this;
-    this.listMember = [];
-    this.listDateExit = [];
     const getChecklists = this.checklistService.getChecklists();
     getChecklists.subscribe(data => {
+      this.listMember = [];
+      this.listDateExit = [];
       data.map(docChangeAction => {
         let checklistItem: any = docChangeAction.payload.doc.data();
         checklistItem.id = docChangeAction.payload.doc.id;
@@ -56,8 +92,8 @@ export class ChecklistListComponent implements OnInit {
           }
           if (checklistItem.dates) {
             self.listDateExit = checklistItem.dates;
-            this.handlelistDatesCheckList();
           }
+          this.handlelistDatesCheckList();
         }
       })
     })
@@ -146,23 +182,20 @@ export class ChecklistListComponent implements OnInit {
     return dates.includes(this.dateService.formatDate(date));
   }
 
-  onClick(event) {
-    event.preventDefault();
-  }
-
   total(memberId): number {
     const { listMember } = this;
     const { listDatesCheckList } = this;
     const listDates = listDatesCheckList.map(date => date.date);
     const checkMember = listMember.filter(member => member.id === memberId);
     if (!checkMember[0].absentDates) {
-      checkMember[0].absentDates = [];
+      return listDates.length;
     }
     return listDates.length - checkMember[0].absentDates.length;
   }
 
   totalAwol(memberId): number {
     const { listMember } = this;
+
     const checkMember = listMember.filter(member => member.id === memberId)
     let dates = [];
     if (checkMember[0].absentDates) {
@@ -173,7 +206,6 @@ export class ChecklistListComponent implements OnInit {
 
   DeleteDate(){
     const { chooseListDay } = this;
-    const self = this;
     const { listMember, listDateExit } = this;
     const listMembers = [...listMember];
     const members = listMembers.map(member => {
@@ -221,5 +253,21 @@ export class ChecklistListComponent implements OnInit {
       return this.chooseListDay.push(day);
     }
     return;
+  }
+
+  editCheckList(member, date) {
+    const dialogRef = this.dialog.open(DialogEditCheckListComponent, {
+      data: {
+        member: member,
+        date: this.datePipe.transform(date, 'yyyy-MM-dd'),
+        members: this.listMember,
+        IdCheckList: this.IdCheckList
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+
+      }
+    });
   }
 }

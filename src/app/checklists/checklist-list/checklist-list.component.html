@@ -5,8 +5,20 @@
 
 <div *ngIf="!progress">
   <div class="check-list__header">
-    <h2 class="check-list__title">My Check List</h2>
-    <div>
+    <div class="d-flex justify-content-between">
+      <h2 class="check-list__title">My Check List</h2>
+      <mat-form-field class="full-width chooseClasses" appearance="fill">
+        <mat-label>Choose Classes</mat-label>
+        <mat-select (selectionChange)="handleCatechism($event)">
+          <mat-option
+            *ngFor="let className of listClass"
+            [value]="className.id">
+            {{ className.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="min-height: 22px;">
       <button
       *ngIf="hasPermission()"
         mat-raised-button
@@ -27,9 +39,9 @@
         [disabled]="chooseListDay.length === 0"
       >Delete Date
       </button>
+      <span style="float: right; font-size: 14px;" class="mr-3">Total day: {{listDatesCheckList.length}}</span>
     </div>
   </div>
-
   <div id="check-list">
     <table class="table table-striped table-bordered table-hover">
       <thead class="thead-dark">
@@ -62,6 +74,7 @@
           <td
             class="text-center"
             *ngFor="let checkDate of listDatesCheckList"
+            (click)="editCheckList(member, checkDate.date)"
           >
             <mat-icon *ngIf="isCheckedDate(member.id, checkDate.date)">check_box</mat-icon>
             <mat-icon *ngIf="absentPermission(member.id, checkDate.date)">local_parking</mat-icon>

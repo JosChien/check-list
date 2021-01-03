@@ -17,7 +17,8 @@ import {
   MatSelectModule,
   MatGridListModule,
   MatSlideToggleModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatRadioModule
 } from '@angular/material';
 
 @NgModule({
@@ -40,7 +41,8 @@ import {
     MatSelectModule,
     MatGridListModule,
     MatSlideToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule
   ],
   exports: [
     CommonModule,
@@ -60,7 +62,8 @@ import {
     MatSelectModule,
     MatGridListModule,
     MatSlideToggleModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatRadioModule
   ]
 })
 export class AppMaterialModule { }

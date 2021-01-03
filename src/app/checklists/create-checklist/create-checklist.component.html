@@ -42,7 +42,7 @@
   </mat-card> -->
 
   <mat-nav-list class="create-list">
-    <div class="list-item">
+    <div class="list-item unchecked">
       <h3 mat-subheader>Unchecked items</h3>
       <mat-list-item *ngFor="let item of getUncheckedItems()" (click)="onCheck(item)">
         <img matListAvatar [src]="item.avatar || '/assets/image/default-user-image.png'" alt="...">
@@ -53,9 +53,10 @@
           <span *ngSwitchDefault>check_box_outline_blank</span>
         </mat-icon> -->
         <!-- <button mat-raised-button>Basic</button> -->
+        <mat-icon (click)="handleReason($event,item)">edit</mat-icon>
       </mat-list-item>
     </div>
-    <div class="list-item">
+    <div class="list-item checked">
       <h3 mat-subheader>Checked items</h3>
       <mat-list-item *ngFor="let item of getCheckedItems()" (click)="onCheck(item)">
         <img matListAvatar [src]="item.avatar || '/assets/image/default-user-image.png'" alt="...">

@@ -1,3 +1,9 @@
+h2 {
+  font-size: 22px;
+  line-height: 50px;
+  margin: 0;
+}
+
 table {
   width: 100%;
 }
@@ -23,5 +29,9 @@ p {
 @media only screen and (min-width: 1024px) {
   .mat-cell {
     font-size: 14px;
+  }
+
+  h2 {
+    font-size: 2rem
   }
 }

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { IChecklistItem, IChecklist, IMember, IMemberSelected, IMemberAbsent } from 'src/app/_models';
+import { IChecklistItem, IChecklist, IMember, IMemberSelected, IMemberAbsent, IReasonMember } from 'src/app/_models';
 import { SortService } from 'src/app/_services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberService } from 'src/app/_firebases/member.service';
 import { DatePipe } from '@angular/common';
 import { ChecklistService } from 'src/app/_firebases/checklist.service';
 import { AlertService } from '../../_services';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogHandleReasonComponent } from 'src/app/_components/DialogHandleReason/DialogHandleReason.component'
 
 @Component({
   selector: 'app-create-checklist',
@@ -21,6 +23,7 @@ export class CreateChecklistComponent implements OnInit {
     private datePipe: DatePipe,
     private checklistService: ChecklistService,
     private alertService: AlertService,
+    public dialog: MatDialog,
     private router: Router) {
 
   }
@@ -34,6 +37,7 @@ export class CreateChecklistComponent implements OnInit {
   selectedDate: Date = new Date();
   listDates: Array<any>;
   listDateExit: Array<any>;
+  listMemberHasReason: Array<IReasonMember>
 
 
   ngOnInit() {
@@ -115,6 +119,10 @@ export class CreateChecklistComponent implements OnInit {
 
   onSubmit() {
     let listIdMemberUnchecked = this.getUncheckedItems().map(MemberUnSelected => MemberUnSelected.id);
+    if (this.listMemberHasReason === undefined) {
+      this.listMemberHasReason = [];
+    }
+
     let currentDate = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd')
 
     if (this.listDateExit.includes(currentDate)) {
@@ -128,6 +136,14 @@ export class CreateChecklistComponent implements OnInit {
       if (listIdMemberUnchecked.includes(member.id)) {
         if (!member.absentDates) {
           member.absentDates = [];
+        }
+        let reasonOfMember = this.listMemberHasReason.filter(memberHasReason => memberHasReason.id === member.id)
+        if (reasonOfMember.length !== 0) {
+          member.absentDates.push({
+            date: currentDate,
+            reason: reasonOfMember[0].reason
+          })
+          return
         }
         member.absentDates.push({
           date: currentDate,
@@ -147,5 +163,35 @@ export class CreateChecklistComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(['/checklists']);
+  }
+
+  handleReason($event, item) {
+    $event.stopPropagation();
+    const dialogRef = this.dialog.open(DialogHandleReasonComponent, {
+      data: { item: item }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        if (this.listMemberHasReason === undefined) {
+          this.listMemberHasReason = [];
+        }
+        let checkExitMember = this.listMemberHasReason.filter(idMember => idMember.id === item.id)
+        if (checkExitMember.length === 0) {
+          this.listMemberHasReason.push({id: item.id, reason: result})
+          return;
+        }
+        let listMember = this.listMemberHasReason.map(member=> {
+          if (member.id === item.id) {
+            return {
+              id: member.id,
+              reason: result
+            }
+          }
+          return member;
+        })
+        this.listMemberHasReason = listMember;
+      }
+      return;
+    });
   }
 }

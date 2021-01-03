@@ -4,7 +4,7 @@
     *ngFor="let item of memberList; let i = index"
     [class.heightCard]="!hasPermission()"
     >
-      <div class="content" (dblclick)="change($event, i)" (click)="checkItem($event, item)" [class.done]="item.isChecked">
+      <div class="content" (dblclick)="change($event, i)">
         <div class="cardFront">
           <mat-card class="example-card">
             <div class="image">
@@ -34,6 +34,7 @@
             </mat-card-content>
             <mat-card-actions  class="d-flex justify-content-between align-items-center">
               <button mat-button *ngIf="hasPermission()" (click)="editMember($event, item)">Update</button>
+              <button mat-button color="warn" *ngIf="hasPermission()" (click)="deleteMember($event, item)">Delete</button>
             </mat-card-actions>
           </mat-card>
         </div>
@@ -73,6 +74,7 @@
             </mat-card-content>
             <mat-card-actions class="d-flex justify-content-between align-items-center">
               <button mat-button *ngIf="hasPermission()" (click)="editMember($event, item)">Update</button>
+              <button mat-button color="warn" *ngIf="hasPermission()" (click)="deleteMember($event, item)">Delete</button>
             </mat-card-actions>
           </mat-card>
         </div>

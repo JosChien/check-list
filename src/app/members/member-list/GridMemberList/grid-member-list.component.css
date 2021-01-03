@@ -1,13 +1,13 @@
 .grid-memberlist {
-	margin: 80px -15px 0
+	margin: 95px -15px 0
 }
 
 .marginTop {
-	margin-top: 30px;
+	margin-top: 80px;
 }
 
 .search {
-	margin-top: 90px;
+	margin-top: 116px;
 }
 
 .memberList__item {
@@ -18,10 +18,6 @@
 	width: 100%;
 	height: 170px;
 	margin-bottom: 10px;
-}
-
-.done {
-	border: 1px solid red;
 }
 
 .mat-card {
@@ -39,7 +35,7 @@
 }
 
 .mat-card-content h6 {
-	font-size: 14px;
+	font-size: 13px;
 }
 
 .red-color {
@@ -72,7 +68,7 @@ p {
 }
 
 .heightCard {
-	height: 330px;
+	height: 315px;
 }
 
 .cards .content {
@@ -219,28 +215,28 @@ p {
 
 @media only screen and (min-width: 1024px) {
 	.marginTop {
-		margin-top: 40px;
+		margin-top: 85px;
 	}
 
 	.search {
-		margin-top: 102px;
+		margin-top: 125px;
 	}
 
 	.cards {
-		height: 425px;
+		height: 400px;
 	}
 
 	.heightCard {
-		height: 400px;
+		height: 450px;
 	}
 
 	.image {
 		margin-bottom: 20px;
-		height: 200px;
+		height: 170px;
 	}
 
 	.grid-member__name {
-		min-height: 50px;
+		min-height: 42px;
 		font-size: 18px;
 	}
 

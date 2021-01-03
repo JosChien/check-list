@@ -38,7 +38,8 @@ import { AccountComponent } from './account/account.component';
 import { ClassesComponent } from './classes/classes.component';
 import { DialogUpdateClassesComponent } from 'src/app/_components/DialogUpdateClasses/DialogUpdateClasses.component'
 import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClass/DialogChooseClass.component'
-
+import { DialogHandleReasonComponent } from 'src/app/_components/DialogHandleReason/DialogHandleReason.component'
+import { DialogEditCheckListComponent } from 'src/app/_components/DialogEditCheckList/DialogEditCheckList.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +61,9 @@ import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClas
     AccountComponent,
     ClassesComponent,
     DialogUpdateClassesComponent,
-    DialogChooseClassComponent
+    DialogChooseClassComponent,
+    DialogHandleReasonComponent,
+    DialogEditCheckListComponent
    ],
   imports: [
     BrowserModule,
@@ -87,7 +90,9 @@ import { DialogChooseClassComponent } from 'src/app/_components/DialogChooseClas
   entryComponents: [
     FormUpdateUserComponent,
     DialogUpdateClassesComponent,
-    DialogChooseClassComponent
+    DialogChooseClassComponent,
+    DialogHandleReasonComponent,
+    DialogEditCheckListComponent
   ],
 })
 export class AppModule { }

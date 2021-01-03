@@ -1,14 +1,10 @@
-.check-list__header {
-	display: flex;
-	justify-content: space-between;
-}
-
 .text-center.date {
 	min-width: 55px;
 }
 
 .check-list__title {
-	font-size: 20px
+	font-size: 22px;
+	line-height: 50px;
 }
 
 button {
@@ -120,6 +116,11 @@ tfoot th:first-child {
 	z-index: 5;
 } */
 
+.chooseClasses {
+	width: 150px;
+	font-size: 12px;
+}
+
 @media only screen and (min-width: 1024px) {
 	.check-list__title {
 		font-size: 2rem
@@ -133,10 +134,14 @@ tfoot th:first-child {
 
 	.check-list__header {
 		display: block;
-		width   : 1170px;
 	}
 
 	#check-list table {
+		font-size: 14px;
+	}
+
+	.chooseClasses {
+		width: 200px;
 		font-size: 14px;
 	}
 }

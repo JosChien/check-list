@@ -12,8 +12,8 @@ export class GridMemberListComponent implements OnInit {
 
   @Input() memberList: Array<IMember>;
   @Input() search: boolean;
-  @Output() checkList = new EventEmitter();
   @Output() editItem = new EventEmitter();
+  @Output() deleteItem = new EventEmitter();
   constructor( public authenticationService: AuthenticationService ) { }
 
   ngOnInit() {}
@@ -26,18 +26,14 @@ export class GridMemberListComponent implements OnInit {
     return false;
   }
 
-  checkItem($event, item) {
-    $event.stopPropagation();
-    const preventEvent = this.hasPermission();
-    if ( !preventEvent ) {
-      return;
-    }
-    this.checkList.emit(item);
-  }
-
   editMember(event, item) {
     event.stopPropagation();
     this.editItem.emit(item);
+  }
+
+  deleteMember(event, item) {
+    event.stopPropagation();
+    this.deleteItem.emit(item.id);
   }
 
   change(event, index) {

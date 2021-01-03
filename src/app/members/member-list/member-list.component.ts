@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { IMember } from 'src/app/_models';
-import { environment } from 'src/environments/environment';
+import { IMember, IClass } from 'src/app/_models';
 import { SortService } from 'src/app/_services';
-import { Router } from '@angular/router';
 import { MemberService } from 'src/app/_firebases/member.service';
 import { AuthenticationService } from 'src/app/_services';
 import { ChecklistService } from 'src/app/_firebases/checklist.service';
 import { IMemberAbsent } from 'src/app/_models';
+import { Router } from '@angular/router';
+import { ClassService } from 'src/app/_firebases/class.service';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
@@ -18,7 +19,8 @@ export class MemberListComponent implements OnInit {
   memberListAPI: Array<IMember>;
   IdCheckList: string;
   listMember: Array<IMemberAbsent>;
-  listChecked = [];
+  listCatechism: Array<IClass>;
+  listClass: Array<IClass>;
   viewTable = false;
   checkSearch = false;
   search = '';
@@ -27,17 +29,47 @@ export class MemberListComponent implements OnInit {
   constructor(
     private router: Router,
     private sortService: SortService,
+    private classService: ClassService,
     private memberService: MemberService,
     public authenticationService: AuthenticationService,
     private checklistService: ChecklistService,
   ) { }
 
   ngOnInit() {
+    const { currentUserValue } = this.authenticationService;
     const idCatechism = localStorage.getItem("idCatechism");
+    const listCatechism = this.classService.getClasses();
+    this.listCatechism = [];
+    this.listClass = [];
+    listCatechism.subscribe(doc => {
+      doc.map(data => {
+        let catechism: any = data.payload.doc.data();
+        catechism.id = data.payload.doc.id;
+        this.listCatechism.push(catechism);
+      })
+      if (currentUserValue && currentUserValue.classes) {
+        currentUserValue.classes.map(idClass => {
+          let childCatechism = this.listCatechism.filter(
+            catechism => catechism.id === idClass.id);
+            this.listClass.push(childCatechism[0]);
+        })
+      } else {
+        this.listClass = this.listCatechism;
+      }
+    })
     if (!idCatechism) {
-      this.router.navigate(['/']);
       return;
     }
+    this.getCheckList(idCatechism);
+    // this.progress = false;
+  }
+
+  handleCatechism($event) {
+    this.getCheckList($event.value);
+    localStorage.setItem('idCatechism', $event.value);
+  }
+
+  getCheckList(idCatechism) {
     const self = this;
     this.listMember = [];
     const getChecklists = this.checklistService.getChecklists();
@@ -54,7 +86,6 @@ export class MemberListComponent implements OnInit {
         }
       })
     })
-    // this.progress = false;
   }
 
   getMembers() {
@@ -64,10 +95,9 @@ export class MemberListComponent implements OnInit {
       const listIdMember = listMember.map(member => member.id);
       listIdMember.map(idMember => {
       const getMember =  this.memberService.getMember(idMember);
-        getMember.subscribe(doc => {
+        getMember.pipe(take(1)).subscribe(doc => {
         let member:any = doc.payload.data();
         member.id = doc.payload.id;
-        member.isChecked = false;
         this.memberList.push(member);
         })
       })
@@ -92,37 +122,18 @@ export class MemberListComponent implements OnInit {
     this.router.navigate(['/members/form-member', {id: item.id}]);
   }
 
-  checkList(item) {
-    const { memberList } = this;
-    memberList.forEach(el => {
-      if(item === el) {
-        return item.isChecked = !item.isChecked ;
-      }
-      return ;
-    });
-
-    if(this.listChecked.includes(item.id)) {
-      return this.listChecked = this.listChecked.filter( id => id !== item.id);
-    }
-    return this.listChecked.push(item.id)
-  }
-
-  deleteMembers() {
+  deleteMember(idMember) {
     this.memberList = [];
     const { listMember, IdCheckList } = this;
-    let listMembers = listMember.filter(member => !this.listChecked.includes(member.id))
+    let listMembers = listMember.filter(member => member.id !== idMember)
     let parmasCheckList = {
       id: IdCheckList,
       members: [...listMembers]
     }
     this.checklistService.updateChecklistItem(parmasCheckList)
     .then(data => {
-        this.listChecked.forEach( listId => {
-          debugger
-          this.memberService.deleteMember(listId);
-      })
+      this.memberService.deleteMember(idMember);
     })
-    this.listChecked = [];
   }
 
   handlerChangeView() {
